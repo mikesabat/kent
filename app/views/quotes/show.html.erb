@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Stock:</b>
+  <%= @quote.stock_id %>
+</p>
+
+<p>
+  <b>Neg1 open:</b>
+  <%= @quote.neg1_open %>
+</p>
+
+<p>
+  <b>Neg1 close:</b>
+  <%= @quote.neg1_close %>
+</p>
+
+<p>
+  <b>Zero open:</b>
+  <%= @quote.zero_open %>
+</p>
+
+<p>
+  <b>Zero close:</b>
+  <%= @quote.zero_close %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @quote.date %>
+</p>
+
+<p>
+  <b>Time:</b>
+  <%= @quote.time %>
+</p>
+
+<p>
+  <b>Eps estimate:</b>
+  <%= @quote.eps_estimate %>
+</p>
+
+<p>
+  <b>Eps actual:</b>
+  <%= @quote.eps_actual %>
+</p>
+
+
+<%= link_to 'Edit', edit_quote_path(@quote) %> |
+<%= link_to 'Back', quotes_path %>

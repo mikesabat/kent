@@ -1,0 +1,53 @@
+<%= form_for(@quote) do |f| %>
+  <% if @quote.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@quote.errors.count, "error") %> prohibited this quote from being saved:</h2>
+
+      <ul>
+      <% @quote.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :stock_id %><br />
+    <%= f.number_field :stock_id %>
+  </div>
+  <div class="field">
+    <%= f.label :neg1_open %><br />
+    <%= f.text_field :neg1_open %>
+  </div>
+  <div class="field">
+    <%= f.label :neg1_close %><br />
+    <%= f.text_field :neg1_close %>
+  </div>
+  <div class="field">
+    <%= f.label :zero_open %><br />
+    <%= f.text_field :zero_open %>
+  </div>
+  <div class="field">
+    <%= f.label :zero_close %><br />
+    <%= f.text_field :zero_close %>
+  </div>
+  <div class="field">
+    <%= f.label :date %><br />
+    <%= f.date_select :date %>
+  </div>
+  <div class="field">
+    <%= f.label :time %><br />
+    <%= f.text_field :time %>
+  </div>
+  <div class="field">
+    <%= f.label :eps_estimate %><br />
+    <%= f.text_field :eps_estimate %>
+  </div>
+  <div class="field">
+    <%= f.label :eps_actual %><br />
+    <%= f.text_field :eps_actual %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

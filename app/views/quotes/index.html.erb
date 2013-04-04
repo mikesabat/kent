@@ -11,6 +11,7 @@
     <th>Time</th>
     <th>Eps estimate</th>
     <th>Eps actual</th>
+    <th>Date Text</th>
     <th></th>
     <th></th>
     <th></th>
@@ -27,6 +28,7 @@
     <td><%= quote.time %></td>
     <td><%= quote.eps_estimate %></td>
     <td><%= quote.eps_actual %></td>
+    <td><%= quote.date_text %></td>
     <td><%= link_to 'Show', quote %></td>
     <td><%= link_to 'Edit', edit_quote_path(quote) %></td>
     <td><%= link_to 'Destroy', quote, confirm: 'Are you sure?', method: :delete %></td>

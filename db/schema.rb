@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130403233309) do
+ActiveRecord::Schema.define(:version => 20130404025145) do
 
   create_table "quotes", :force => true do |t|
     t.integer  "stock_id"
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(:version => 20130403233309) do
     t.datetime "updated_at",   :null => false
     t.text     "date_text"
     t.text     "period"
+  end
+
+  create_table "stocks", :force => true do |t|
+    t.string   "symbol"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end

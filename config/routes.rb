@@ -1,6 +1,8 @@
 Kent::Application.routes.draw do
   
-  resources :quotes
+  resources :stocks do
+    resources :quotes
+  end
 
   root :to => "pages#home"
   get'about' => 'pages#about'

@@ -44,6 +44,7 @@ class StocksController < ApplicationController
 
     respond_to do |format|
       if @stock.save
+        Quote.grab_data(@stock.symbol)
         format.html { redirect_to @stock, notice: 'Stock was successfully created.' }
         format.json { render json: @stock, status: :created, location: @stock }
       else

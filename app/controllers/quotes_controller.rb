@@ -2,6 +2,7 @@ class QuotesController < ApplicationController
   # GET /quotes
   # GET /quotes.json
   def index
+    @stock = Stock.find(params[:stock_id])
     @quotes = Quote.all
 
     respond_to do |format|
@@ -24,7 +25,8 @@ class QuotesController < ApplicationController
   # GET /quotes/new
   # GET /quotes/new.json
   def new
-    @quote = Quote.new
+    #@stock = Stock.find(params[:stock_id]) #http://stackoverflow.com/questions/3305530/rails-3-nested-resources-undefined-method-error
+    @quote = @stock.quotes.build()
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,7 +42,11 @@ class QuotesController < ApplicationController
   # POST /quotes
   # POST /quotes.json
   def create
-    @quote = Quote.new(params[:quote])
+    #@stock = Stock.find(params[:stock_id])
+    @quote = @stock.quotes.build(params[:quote])#Quote.new(params[:quote]) #@quote = Quote.new(params[:quote][:stock])
+    
+    @quote.stock_id = @stock.id
+    
 
     respond_to do |format|
       if @quote.save

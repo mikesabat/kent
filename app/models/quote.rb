@@ -31,10 +31,13 @@ class Quote < ActiveRecord::Base
         end
         unless release[0] == "SYMBOL" or release[4] == nil
           quote = Quote.new
+          @stock = Stock.last #this needs to change or else it will mess something up.
+          puts "*************#{@stock.symbol}*****#{@stock.id}*******************"
           quote.period = release[1]          
           quote.eps_estimate = release[3].delete!("$").to_f
           quote.eps_actual = release[4].delete!("$").to_f
           quote.date_text = release[6]
+          quote.stock_id = "#{@stock.id}".to_i #really? How can this be this fucking complicated
           if release[6].include? 'BMO'
             quote.date = Date.parse(release[6])
           elsif release[6].include? 'AMC'

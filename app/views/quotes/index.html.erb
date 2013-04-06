@@ -17,25 +17,22 @@
     <th></th>
   </tr>
 
-<% @quotes.each do |quote| %>
-  <tr>
-    <td><%= quote.stock_id %></td>
-    <td><%= quote.neg1_open %></td>
-    <td><%= quote.neg1_close %></td>
-    <td><%= quote.zero_open %></td>
-    <td><%= quote.zero_close %></td>
-    <td><%= quote.date %></td>
-    <td><%= quote.time %></td>
-    <td><%= quote.eps_estimate %></td>
-    <td><%= quote.eps_actual %></td>
-    <td><%= quote.date_text %></td>
-    <td><%= link_to 'Show', quote %></td>
-    <td><%= link_to 'Edit', edit_quote_path(quote) %></td>
-    <td><%= link_to 'Destroy', quote, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
+    <% @stock.quotes.each do |quote| %>
+      <tr>
+        <td><%= quote.stock_id %></td>
+        <td><%= quote.neg1_open %></td>
+        <td><%= quote.neg1_close %></td>
+        <td><%= quote.zero_open %></td>
+        <td><%= quote.zero_close %></td>
+        <td><%= quote.date %></td>
+        <td><%= quote.time %></td>
+        <td><%= quote.eps_estimate %></td>
+        <td><%= quote.eps_actual %></td>
+        <td><%= quote.date_text %></td>
+        
+      </tr>
+    <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Quote', new_quote_path %>

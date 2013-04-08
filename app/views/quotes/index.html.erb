@@ -1,13 +1,14 @@
-<h1>Listing quotes</h1>
+<h1>Quotes for <%= @stock.symbol.upcase %></h1>
 
 <table>
   <tr>
+    <th>Quarter/Year</th>
+    <th>Date</th>
     <th>Stock</th>
     <th>Neg1 open</th>
     <th>Neg1 close</th>
     <th>Zero open</th>
-    <th>Zero close</th>
-    <th>Date</th>
+    <th>Zero close</th>   
     <th>Time</th>
     <th>Eps estimate</th>
     <th>Eps actual</th>
@@ -19,12 +20,13 @@
 
     <% @stock.quotes.each do |quote| %>
       <tr>
-        <td><%= quote.stock_id %></td>
+        <td><%= quote.period %></td>
+        <td><%= quote.date %></td>
+        <td><%= quote.stock.symbol %></td>
         <td><%= quote.neg1_open %></td>
         <td><%= quote.neg1_close %></td>
         <td><%= quote.zero_open %></td>
-        <td><%= quote.zero_close %></td>
-        <td><%= quote.date %></td>
+        <td><%= quote.zero_close %></td>  
         <td><%= quote.time %></td>
         <td><%= quote.eps_estimate %></td>
         <td><%= quote.eps_actual %></td>

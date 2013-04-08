@@ -2,7 +2,7 @@
 
 <p>
   <b>Stock:</b>
-  <%= @quote.stock_id %>
+  <%= @quote.stock.symbol.upcase %>
 </p>
 
 <p>
@@ -46,5 +46,4 @@
 </p>
 
 
-<%= link_to 'Edit', edit_quote_path(@quote) %> |
-<%= link_to 'Back', quotes_path %>
+

@@ -1,9 +1,29 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Symbol:</b>
-  <%= @stock.symbol %>
-</p>
+<div class="center hero-unit">
+	<p>
+	  <b><%= @stock.symbol.upcase %></b>
+	  
+	  <% if @stock.quotes.first.date == nil %>
+	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release <%= @stock.quotes.first.date_text  %></div>  
+	  <% elsif @stock.quotes.first.date > Date.today %>
+	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release <%= @stock.quotes.first.date %></div> 
+	  <% else %>
+	  	<div class="get_quote"><%= link_to "Get next Earnings Date", "#", class: "btn btn-primary btn-large" %>
+	  <% end %>
+
+	</p>
+</div>
+
+
+	<% @stock.quotes.each do |quote| %>
+	  <div class="box"> 
+	  	<%= quote.period %></td>
+
+	  	<p><%= link_to "Quote Deets", stock_quote_path(@stock, quote) %></p>
+	  </div>   
+	<% end %>
+
 
 
 <%= link_to 'Edit', edit_stock_path(@stock) %> |

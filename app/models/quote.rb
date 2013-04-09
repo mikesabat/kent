@@ -8,18 +8,39 @@ class Quote < ActiveRecord::Base
   validates :period, :uniqueness => {:scope => :stock_id,
     :message => "One Quote Per Quarter" }
 
-  #after_create :lookup
+  after_create :lookup
 
 
 
-  def lookup #(symbol, date)
-      YahooFinance::get_historical_quotes( stock.symbol,
-                                      date,
-                                      date ) do |row|
-              
-              self.zero_open = row[1]
-              self.zero_close = row[4]        
+  def lookup
+    unless date == nil      
+      puts "77777777#{stock.symbol}*******#{date}***********" #why is the date, 'true'??
+        YahooFinance::get_historical_quotes( stock.symbol,
+                                        date,
+                                        date ) do |row|
+                
+          self.zero_open = row[1]
+          self.zero_close = row[4]
+          ddd = row[4]
+          puts "----------------------#{ddd}"  
+          self.save 
+        end
+    
+
+      d = date - 1.day
+      if d.wday.between?(1, 4)
+         YahooFinance::get_historical_quotes( stock.symbol,
+                                          date,
+                                          date ) do |row|
+                  
+            self.neg1_open = row[1]
+            self.neg1_close = row[4]
+            ddd = row[4]
+            puts "----------------------#{ddd}"  
+            self.save 
+          end
       end
+    end
   end
 
   def self.grab_data(symbol)

@@ -5,9 +5,9 @@
 	  <b><%= @stock.symbol.upcase %></b>
 	  
 	  <% if @stock.quotes.first.date == nil %>
-	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release <%= @stock.quotes.first.date_text  %></div>  
+	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release: <%= @stock.quotes.first.date_text  %></div>  
 	  <% elsif @stock.quotes.first.date > Date.today %>
-	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release <%= @stock.quotes.first.date %></div> 
+	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release: <%= @stock.quotes.first.date %></div> 
 	  <% else %>
 	  	<div class="get_quote"><%= link_to "Get next Earnings Date", "#", class: "btn btn-primary btn-large" %>
 	  <% end %>

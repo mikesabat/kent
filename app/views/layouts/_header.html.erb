@@ -17,9 +17,12 @@
                         <li>    
                             <%= link_to 'About',  about_path %>
                         </li>
+                        <li>    
+                            <%= link_to 'Stocks',  stocks_path %>
+                        </li>
                     </ul>
-                    <ul class="nav pull-right">
-                                <li><%= link_to 'Login',  '#' %></li>
+                    <ul class="nav pull-right btn-success">
+                            <li id='add_stock'><%= link_to 'Add Stock', new_stock_path %></li>
                     </ul>
                 </div>
         </div>

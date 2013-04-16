@@ -3,18 +3,19 @@ require 'open-uri'
 require 'YahooFinance'
 
 class Quote < ActiveRecord::Base
-  attr_accessible :date, :eps_actual, :eps_estimate, :neg1_close, :neg1_open, :stock_id, :time, :zero_close, :zero_open, :date_text, :period
+  attr_accessible :date, :eps_actual, :eps_estimate, :neg1_close, :neg1_open, :stock_id, :time, :zero_close, :zero_open, :date_text, :period, :history_prediction, :history_win
   belongs_to :stock
   validates :period, :uniqueness => {:scope => :stock_id,
     :message => "One Quote Per Quarter" }
 
-  after_create :lookup
+  after_create :lookup, :price
+  
 
 
 
   def lookup
     unless date == nil      
-      puts "77777777#{stock.symbol}*******#{date}***********" #why is the date, 'true'??
+      #puts "77777777#{stock.symbol}*******#{date}***********" #why is the date, 'true'??
         YahooFinance::get_historical_quotes( stock.symbol,
                                         date,
                                         date ) do |row|
@@ -22,7 +23,7 @@ class Quote < ActiveRecord::Base
           self.zero_open = row[1]
           self.zero_close = row[4]
           ddd = row[4]
-          puts "----------------------#{ddd}"  
+          #puts "----------------------#{ddd}"  
           self.save 
         end
     
@@ -30,18 +31,20 @@ class Quote < ActiveRecord::Base
       d = date - 1.day
       if d.wday.between?(1, 4)
          YahooFinance::get_historical_quotes( stock.symbol,
-                                          date,
-                                          date ) do |row|
+                                          d,
+                                          d ) do |row|
                   
             self.neg1_open = row[1]
             self.neg1_close = row[4]
             ddd = row[4]
-            puts "----------------------#{ddd}"  
+            #puts "----------------------#{ddd}"  
             self.save 
           end
       end
     end
   end
+
+
 
   def self.grab_data(symbol)
     website = symbol
@@ -76,5 +79,51 @@ class Quote < ActiveRecord::Base
   end
   
 
+  def price
+    unless neg1_open == nil or neg1_close == nil
+      change = neg1_close - neg1_open
+      percent_change = ((change / neg1_open) * 100).round(2).abs
+      puts "Price method---Day -1 Open #{neg1_open}---Day -1 Close #{neg1_close}--Change #{change}-percent: #{percent_change}---"
+      
+      if percent_change > 1
+        #puts "^^^^^^^^^^^^^^^^ We are in Play ^^^^^^^^^^^^^^^^^^^^^^"
+        def predict 
+          #puts "----------------------PREDICT is running"
+            if neg1_close > neg1_open
+                self.history_prediction = "Up"
+            elsif neg1_open > neg1_close
+                self.history_prediction = "Down"
+            else
+                self.history_prediction = "impossible"
+            end
+        end   
+
+        def track
+          if history_prediction == "Up" and zero_open > neg1_close
+            self.history_win = true            
+          elsif history_prediction == "Down" and zero_open < neg1_close
+            self.history_win = true
+          else
+            
+          end
+            # elsif prediction == "up" and day_zero_close < day_neg1_close
+            #     self.win = false
+            # elsif prediction == "down" and day_zero_close > day_neg1_close
+            #     self.win = false
+            # else
+            #     #puts "-----*****-------"
+               #self.win = true          
+        end
+
+        self.predict
+        track
+      else
+          self.history_prediction = "fail" 
+          self.history_win = nil
+      end
+
+    end
+    self.save
+  end 
 
 end

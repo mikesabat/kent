@@ -15,6 +15,7 @@ class QuotesController < ApplicationController
   # GET /quotes/1.json
   def show
     @quote = Quote.find(params[:id])
+    
 
     respond_to do |format|
       format.html # show.html.erb
@@ -45,7 +46,7 @@ class QuotesController < ApplicationController
     #@stock = Stock.find(params[:stock_id])
     @quote = @stock.quotes.build(params[:quote])#Quote.new(params[:quote]) #@quote = Quote.new(params[:quote][:stock])
     
-    @quote.stock_id = @stock.id
+    @quote.stock_id = @stock.id #i don't think this matters
     
 
     respond_to do |format|

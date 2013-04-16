@@ -12,14 +12,23 @@
 	  	<div class="get_quote"><%= link_to "Get next Earnings Date", "#", class: "btn btn-primary btn-large" %>
 	  <% end %>
 
+	  <b>Histoy Prediction - Win Percentage: <%= @stock.history_win_percentage %>%</b>
+
 	</p>
 </div>
 
 
-	<% @stock.quotes.each do |quote| %>
+	<% @quotes_with_dates.each do |quote| %>
 	  <div class="box"> 
-	  	<%= quote.period %></td>
-
+	  	<p><%= quote.period %></p>
+	  	<p><b>History Prediction: </b><%= quote.history_prediction %></p>
+	  	<% if quote.history_win == nil %>
+	  		<p class="lost_history"> Previous Behavior: LOST <p>
+	  	<% elsif quote.history_win == true %>
+	  		<p class="won_history"> Previous Behavior: WON <p>
+	  	<% else %>
+	  		BROKEN
+	  	<% end %>	  	
 	  	<p><%= link_to "Quote Deets", stock_quote_path(@stock, quote) %></p>
 	  </div>   
 	<% end %>

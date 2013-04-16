@@ -14,6 +14,9 @@ class StocksController < ApplicationController
   # GET /stocks/1.json
   def show
     @stock = Stock.find(params[:id])
+    @quotes_with_dates = @stock.quotes.where(:date != nil) #not working, need help. should make this a scope
+    @stock.history_percent #this seems to call the function correctly
+
 
     respond_to do |format|
       format.html # show.html.erb

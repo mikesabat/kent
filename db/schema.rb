@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404025145) do
+ActiveRecord::Schema.define(:version => 20130415160652) do
 
   create_table "quotes", :force => true do |t|
     t.integer  "stock_id"
@@ -20,19 +20,21 @@ ActiveRecord::Schema.define(:version => 20130404025145) do
     t.decimal  "zero_open"
     t.decimal  "zero_close"
     t.date     "date"
-    t.string   "time"
     t.decimal  "eps_estimate"
     t.decimal  "eps_actual"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.text     "date_text"
     t.text     "period"
+    t.string   "history_prediction"
+    t.boolean  "history_win"
   end
 
   create_table "stocks", :force => true do |t|
     t.string   "symbol"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.decimal  "history_win_percentage"
   end
 
 end

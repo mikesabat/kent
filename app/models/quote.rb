@@ -79,50 +79,54 @@ class Quote < ActiveRecord::Base
   end
   
 
-  def price
-    unless neg1_open == nil or neg1_close == nil
-      change = neg1_close - neg1_open
-      percent_change = ((change / neg1_open) * 100).round(2).abs
-      puts "Price method---Day -1 Open #{neg1_open}---Day -1 Close #{neg1_close}--Change #{change}-percent: #{percent_change}---"
-      
-      if percent_change > 1
-        #puts "^^^^^^^^^^^^^^^^ We are in Play ^^^^^^^^^^^^^^^^^^^^^^"
-        def predict 
-          #puts "----------------------PREDICT is running"
-            if neg1_close > neg1_open
-                self.history_prediction = "Up"
-            elsif neg1_open > neg1_close
-                self.history_prediction = "Down"
-            else
-                self.history_prediction = "impossible"
-            end
-        end   
+  def price  
+    
 
-        def track
-          if history_prediction == "Up" and zero_open > neg1_close
-            self.history_win = true            
-          elsif history_prediction == "Down" and zero_open < neg1_close
-            self.history_win = true
-          else
+      unless neg1_open == nil or neg1_close == nil
+        change = neg1_close - neg1_open
+        percent_change = ((change / neg1_open) * 100).round(2).abs
+        puts "Price method---Day -1 Open #{neg1_open}---Day -1 Close #{neg1_close}--Change #{change}-percent: #{percent_change}---"
+        
+        if percent_change > 1
+          
+          def predict 
             
+              if neg1_close > neg1_open
+                  self.history_prediction = "Up"
+              elsif neg1_open > neg1_close
+                  self.history_prediction = "Down"
+              else
+                  self.history_prediction = "impossible"
+              end
+          end   
+
+          def track
+            if history_prediction == "Up" and zero_open > neg1_close
+              self.history_win = true            
+            elsif history_prediction == "Down" and zero_open < neg1_close
+              self.history_win = true
+            else
+              
+            end
+              # elsif prediction == "up" and day_zero_close < day_neg1_close
+              #     self.win = false
+              # elsif prediction == "down" and day_zero_close > day_neg1_close
+              #     self.win = false
+              # else
+              #     #puts "-----*****-------"
+                 #self.win = true          
           end
-            # elsif prediction == "up" and day_zero_close < day_neg1_close
-            #     self.win = false
-            # elsif prediction == "down" and day_zero_close > day_neg1_close
-            #     self.win = false
-            # else
-            #     #puts "-----*****-------"
-               #self.win = true          
+
+          self.predict
+          track
+        
+          
+        else
+          self.history_prediction = "FAIL" 
+          self.history_win = nil
         end
 
-        self.predict
-        track
-      else
-          self.history_prediction = "fail" 
-          self.history_win = nil
       end
-
-    end
     self.save
   end 
 

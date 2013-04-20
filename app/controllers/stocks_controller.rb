@@ -14,8 +14,18 @@ class StocksController < ApplicationController
   # GET /stocks/1.json
   def show
     @stock = Stock.find(params[:id])
-    @quotes_with_dates = @stock.quotes.where(:date != nil) #not working, need help. should make this a scope
+    @quote_with_dates = @stock.quotes.where(['date is not null']) #not working, need help.    
     @stock.history_percent #this seems to call the function correctly
+
+
+    @up_history_predictions = @stock.quotes.where(:history_prediction => 'Up')
+    up_prediction_wins = @up_history_predictions.where(:history_win => true)
+    @up_win_percent = ((up_prediction_wins.size.to_f / @up_history_predictions.size.to_f)*100).round(2)
+
+
+    @down_history_predictions = @stock.quotes.where(:history_prediction => 'Down')
+    down_prediction_wins = @down_history_predictions.where(:history_win => true)
+    @down_win_percent = ((down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
 
 
     respond_to do |format|

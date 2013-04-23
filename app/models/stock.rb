@@ -2,7 +2,7 @@ class Stock < ActiveRecord::Base
   attr_accessible :symbol
 
   validates :symbol, :uniqueness => true
-  has_many :quotes
+  has_many :quotes, :dependent => :destroy
   accepts_nested_attributes_for :quotes
 
 
@@ -11,20 +11,12 @@ class Stock < ActiveRecord::Base
     predicted_up = quotes.where(:history_prediction => "Up").size
     predicted_down = quotes.where(:history_prediction => "Down").size
     playable_quotes = predicted_up + predicted_down
-  	# puts "00000000000000000 wins =----#{win}-----0000000000000000"
-   #  puts "11111111111111111 predicted up #{predicted_up} 1111111111111"
-   #  puts "11111111111111111 predicted down #{predicted_down} 1111111111111"
-   #  puts "11111111111111111 playable #{playable_quotes} 1111111111111"
-   #  puts "11111111111111111 playable integer? #{playable_quotes / 6} 1111111111111"
-    self.history_win_percentage = ((win.to_f / playable_quotes)*100).round(2)
 
-    puts "11111111111111111 Win % #{history_win_percentage} 1111111111111"
+    self.history_win_percentage = ((win.to_f / playable_quotes)*100).round(2) 
+  end
 
-
-
-    
-
-
+  def recent
+    future = quotes.where(:date > Date.today)
   end
 
 

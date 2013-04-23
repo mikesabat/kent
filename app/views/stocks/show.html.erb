@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <div class="center hero-unit">
-	<p>
+	
 	  <b><%= @stock.symbol.upcase %></b>
 
 	  <% if @stock.quotes.first.date == nil %>
@@ -12,15 +12,19 @@
 	  	<div class="get_quote"><%= link_to "Get next Earnings Date", "#", class: "btn btn-primary btn-large pull-right" %>
 	  <% end %>
 
-	  <p><b>Histoy Prediction - Win Percentage: <%= @stock.history_win_percentage %>%</b></p>
+	  
+
+	  <p><b>Histoy Win Percentage: <%= @stock.history_win_percentage %>%</b></p>
 	  <p>History Predicts Up: <%= @up_history_predictions.size %> ( <%= @up_win_percent %>% ) </p> 
 	  <p>History Predicts Down: <%= @down_history_predictions.size %> ( <%= @down_win_percent %>% ) </p>
 
-	</p>
+	
+	
+	<%= next_quote_date %>
 </div>
 
 
-	<% @quote_with_dates.each do |quote| %>
+	<% @past_quotes.each do |quote| %>
 	  <div class="box"> 
 	  	<p><%= quote.period %></p>
 	  	<p><b>History Prediction: </b><%= quote.history_prediction %></p>

@@ -14,7 +14,7 @@ class StocksController < ApplicationController
   # GET /stocks/1.json
   def show
     @stock = Stock.find(params[:id])
-    @quote_with_dates = @stock.quotes.where(['date is not null']) #not working, need help.    
+    @quote_with_dates = @stock.quotes.where(['date is not null'])     
     @stock.history_percent #this seems to call the function correctly
 
 
@@ -26,6 +26,14 @@ class StocksController < ApplicationController
     @down_history_predictions = @stock.quotes.where(:history_prediction => 'Down')
     down_prediction_wins = @down_history_predictions.where(:history_win => true)
     @down_win_percent = ((down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
+
+    #sent to view, only shows quotes that have a date, and in the past - 18 of them...
+    @past_quotes = @quote_with_dates.where('date < ?', Date.today).limit(18)
+    @future_quote = @quote_with_dates.where('date > ?', Date.today)
+    unless @future_quote.empty?
+      ggg = @future_quote.first.date
+      puts "++++++++++#{ggg}++++++++++++"
+    end
 
 
     respond_to do |format|

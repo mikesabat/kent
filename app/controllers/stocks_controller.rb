@@ -30,16 +30,16 @@ class StocksController < ApplicationController
     #sent to view, only shows quotes that have a date, and in the past - 18 of them...
     @past_quotes = @quote_with_dates.where('date < ?', Date.today).limit(18)
     @future_quote = @quote_with_dates.where('date > ?', Date.today)
-    unless @future_quote.empty?
-      ggg = @future_quote.first.date
-      puts "++++++++++#{ggg}++++++++++++"
-    end
-
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @stock }
     end
+  end
+
+  def dashboard
+    @winning_stocks = Stock.winning
+    @losing_stocks = Stock.losing 
   end
 
   # GET /stocks/new

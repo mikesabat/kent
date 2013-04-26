@@ -1,1 +1,9 @@
 Dashboard
+
+
+<% @stock_order.each do |stock| %>
+	<div> <!-- class="box"> --> 
+		<%= stock.symbol %> 
+		<%= stock.quotes.first.date %> <!-- This won't work. Need to iterate through the quotes in the controller and assign them a variable -->
+	</div>
+<% end%>

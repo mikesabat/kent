@@ -4,8 +4,9 @@ class Stock < ActiveRecord::Base
   validates :symbol, :uniqueness => true
   has_many :quotes, :dependent => :destroy
   accepts_nested_attributes_for :quotes
-  scope :winning, where('history_win_percentage > 60') 
+  scope :winning, where('history_win_percentage > 10') 
   scope :losing, where('history_win_percentage < 40') 
+
 
 
   def history_percent
@@ -16,6 +17,17 @@ class Stock < ActiveRecord::Base
 
     self.history_win_percentage = ((win.to_f / playable_quotes)*100).round(2) 
     self.save
+  end
+
+  def future_quote_date
+    quote_with_date = quotes.where(['date is not null'])
+    future_quote_with_date = quote_with_date.where('date > ?', Date.today)
+    return future_quote_with_date.date
+
+  end
+
+  def self.all_ordered_by_child
+   includes(:quotes).order('quotes.date DESC')
   end
 
   

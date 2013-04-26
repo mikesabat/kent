@@ -40,7 +40,15 @@ class StocksController < ApplicationController
   def dashboard
     @winning_stocks = Stock.winning
     @losing_stocks = Stock.losing 
+
+    @next_winners = @winning_stocks.each do |stock|
+      quote_with_date = stock.quotes.where(['date is not null'])    
+      @future_quotes_of_winning_stocks = quote_with_date.where('date > ?', Date.today)          
+    end 
+
+    @stock_order = @winning_stocks.all_ordered_by_child
   end
+  #This works - why can't I access the .date from the view
 
   # GET /stocks/new
   # GET /stocks/new.json
@@ -103,3 +111,5 @@ class StocksController < ApplicationController
     end
   end
 end
+
+

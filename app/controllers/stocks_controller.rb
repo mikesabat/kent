@@ -16,20 +16,21 @@ class StocksController < ApplicationController
     @stock = Stock.find(params[:id])
     @stock_quotes_recent = @stock.quotes.limit(18)        
     @stock.history_percent #this seems to call the function correctly
+    @dated_quotes = @stock.quotes.dated
 
 
-    @up_history_predictions = @stock_quotes_recent.where(:history_prediction => 'Up')
-    @up_prediction_wins = @up_history_predictions.where(:history_win => true)
+    @up_history_predictions = @dated_quotes.select { |q| q.history_prediction == 'Up' }  #where(:history_prediction => 'Up')
+    @up_prediction_wins = @up_history_predictions.select { |q| q.history_win == true } # < where(:history_win => true)
     @up_win_percent = ((@up_prediction_wins.size.to_f / @up_history_predictions.size.to_f)*100).round(2)
 
 
-    @down_history_predictions = @stock_quotes_recent.where(:history_prediction => 'Down')
-    @down_prediction_wins = @down_history_predictions.where(:history_win => true)
+    @down_history_predictions = @stock_quotes_recent.select { |q| q.history_prediction == 'Down' }   #where(:history_prediction => 'Down')
+    @down_prediction_wins = @down_history_predictions.select { |q| q.history_win == true }   #where(:history_win => true)
     @down_win_percent = ((@down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
 
-    @quote_with_dates = @stock_quotes_recent.where(['date is not null'])
-    @past_quotes = @quote_with_dates.where('date < ?', Date.today)
-    @future_quote = @quote_with_dates.where('date > ?', Date.today)
+    @quote_with_dates = @dated_quotes
+    @past_quotes = @dated_quotes.select { |q| q.date < Date.today }    #where('date < ?', Date.today)#@past_quotes = @dated_quotes.where('date < ?', Date.today)
+    @future_quote = @dated_quotes - @past_quotes #@dated_quotes.select { |q| q.date !< Date.today }   #@quote_with_dates.where('date > ?', Date.today)
     
     respond_to do |format|
       format.html # show.html.erb

@@ -24,7 +24,7 @@ class StocksController < ApplicationController
     @up_win_percent = ((@up_prediction_wins.size.to_f / @up_history_predictions.size.to_f)*100).round(2)
 
 
-    @down_history_predictions = @stock_quotes_recent.select { |q| q.history_prediction == 'Down' }   #where(:history_prediction => 'Down')
+    @down_history_predictions = @dated_quotes.select { |q| q.history_prediction == 'Down' }   #where(:history_prediction => 'Down')
     @down_prediction_wins = @down_history_predictions.select { |q| q.history_win == true }   #where(:history_win => true)
     @down_win_percent = ((@down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
 

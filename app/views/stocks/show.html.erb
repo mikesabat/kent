@@ -24,7 +24,7 @@
 	  <div class="box" > 
 	  	<p><%= quote.period %></p>
 	  	<p><b>History Prediction: </b><%= quote.history_prediction %></p>
-	  	<% if quote.history_win == nil and quote.history_prediction == "FAIL" %>
+	  	<% if quote.history_prediction == nil or quote.history_prediction == "FAIL" %>
 	  		<p> Victory: UNKNOWN <p>
 	  	<% elsif quote.history_win == true %>
 	  		<p class="won_history"> Previous Behavior: WON <p>

@@ -9,6 +9,8 @@ class Quote < ActiveRecord::Base
     :message => "One Quote Per Quarter" }
 
   after_create :lookup, :price
+  scope :dated, where("date is not null").limit(18)
+  scope :predict_up, where(:history_prediction => "Up")
   
 
 

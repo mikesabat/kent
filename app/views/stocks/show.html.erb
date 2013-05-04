@@ -5,35 +5,32 @@
 	  <b><%= @stock.symbol.upcase %></b>
 
 	  <% if @stock.quotes.first.date == nil %>
-	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release: <%= @stock.quotes.first.date_text  %></div>  
+	  	<div class='upcoming quote'><%= @stock.quotes.first.period %> Earnings Release: <%= @stock.quotes.first.date_text %></div>  
 	  <% elsif @stock.quotes.first.date > Date.today %>
-	  	<div class='upcoming quote'><%= @stock.quotes.first.period  %> Earnings Release: <%= @stock.quotes.first.date %></div> 
+	  	<div class='upcoming quote'><%= @future_quote.first.period %> Earnings Release: <%= @future_quote.first.date %></div> 
 	  <% else %>
 	  	<div class="get_quote"><%= link_to "Get next Earnings Date", "#", class: "btn btn-primary btn-large pull-right" %>
 	  <% end %>
 
 	  
 
-	  <p><b>Histoy Win Percentage: <%= @stock.history_win_percentage %>%</b></p>
+	  <p><b>Histoy Win Percentage: <%= @stock.history_win_percentage %>%</b></p> <!-- It looks like this takes all quotes - need to limit. -->
 	  <p>History Predicts Up: <%= @up_history_predictions.size %> ( <%= @up_win_percent %>% ) </p> 
 	  <p>History Predicts Down: <%= @down_history_predictions.size %> ( <%= @down_win_percent %>% ) </p>
 
-	
-	
-	<%= next_quote_date %>
 </div>
 
 
 	<% @past_quotes.each do |quote| %>
-	  <div class="box"> 
+	  <div class="box" > 
 	  	<p><%= quote.period %></p>
 	  	<p><b>History Prediction: </b><%= quote.history_prediction %></p>
-	  	<% if quote.history_win == nil %>
-	  		<p class="lost_history"> Previous Behavior: LOST <p>
+	  	<% if quote.history_win == nil and quote.history_prediction == "FAIL" %>
+	  		<p> Victory: UNKNOWN <p>
 	  	<% elsif quote.history_win == true %>
 	  		<p class="won_history"> Previous Behavior: WON <p>
 	  	<% else %>
-	  		BROKEN
+	  		<p class="lost_history"> Previous Behavior: LOST <p>
 	  	<% end %>	  	
 	  	<p><%= link_to "Quote Deets", stock_quote_path(@stock, quote) %></p>
 	  </div>   

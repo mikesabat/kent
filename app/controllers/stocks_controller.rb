@@ -14,21 +14,21 @@ class StocksController < ApplicationController
   # GET /stocks/1.json
   def show
     @stock = Stock.find(params[:id])
-    @quote_with_dates = @stock.quotes.where(['date is not null'])     
+    @stock_quotes_recent = @stock.quotes.limit(18)        
     @stock.history_percent #this seems to call the function correctly
 
 
-    @up_history_predictions = @stock.quotes.where(:history_prediction => 'Up')
-    up_prediction_wins = @up_history_predictions.where(:history_win => true)
-    @up_win_percent = ((up_prediction_wins.size.to_f / @up_history_predictions.size.to_f)*100).round(2)
+    @up_history_predictions = @stock_quotes_recent.where(:history_prediction => 'Up')
+    @up_prediction_wins = @up_history_predictions.where(:history_win => true)
+    @up_win_percent = ((@up_prediction_wins.size.to_f / @up_history_predictions.size.to_f)*100).round(2)
 
 
-    @down_history_predictions = @stock.quotes.where(:history_prediction => 'Down')
-    down_prediction_wins = @down_history_predictions.where(:history_win => true)
-    @down_win_percent = ((down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
+    @down_history_predictions = @stock_quotes_recent.where(:history_prediction => 'Down')
+    @down_prediction_wins = @down_history_predictions.where(:history_win => true)
+    @down_win_percent = ((@down_prediction_wins.size.to_f / @down_history_predictions.size.to_f)*100).round(2)
 
-    #sent to view, only shows quotes that have a date, and in the past - 18 of them...
-    @past_quotes = @quote_with_dates.where('date < ?', Date.today).limit(18)
+    @quote_with_dates = @stock_quotes_recent.where(['date is not null'])
+    @past_quotes = @quote_with_dates.where('date < ?', Date.today)
     @future_quote = @quote_with_dates.where('date > ?', Date.today)
     
     respond_to do |format|
@@ -41,12 +41,11 @@ class StocksController < ApplicationController
     @winning_stocks = Stock.winning
     @losing_stocks = Stock.losing 
 
-    @next_winners = @winning_stocks.each do |stock|
-      quote_with_date = stock.quotes.where(['date is not null'])    
-      @future_quotes_of_winning_stocks = quote_with_date.where('date > ?', Date.today)          
-    end 
+    @winning_stocks_with_qd = @winning_stocks.order_by_quote_date
+    @winning_stocks_with_qd_order = @winning_stocks_with_qd.reverse
 
-    @stock_order = @winning_stocks.all_ordered_by_child
+    @losing_stocks_with_qd = @losing_stocks.order_by_quote_date
+    @losing_stocks_with_qd_order = @losing_stocks_with_qd.reverse
   end
   #This works - why can't I access the .date from the view
 

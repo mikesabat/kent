@@ -1,9 +1,50 @@
-Dashboard
+<h2>Winning Stocks</h2>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th> Next Quote Date </th>
+				<th> Stock </th>
+				<th> History Win % </th>
+			</tr>
+		</thead>
+		
+			<tbody>
+				<% @winning_stocks_with_qd_order.each do |stock| %>
+					<tr >										
+							<td><%= stock.quotes.first.date %></td>
+							<td><%= link_to stock.symbol.upcase, stock %></td>
+							<td><%= stock.history_win_percentage %>% </td>
+					</tr>	
+				<% end%>		
+			</tbody>
+	</table>
 
 
-<% @stock_order.each do |stock| %>
-	<div> <!-- class="box"> --> 
-		<%= stock.symbol %> 
-		<%= stock.quotes.first.date %> <!-- This won't work. Need to iterate through the quotes in the controller and assign them a variable -->
-	</div>
-<% end%>
+<h2>Losing Stocks</h2>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th> Next Quote Date </th>
+				<th> Stock </th>
+				<th> History Win % </th>
+			</tr>
+		</thead>
+		
+			<tbody>
+				<% @losing_stocks_with_qd_order.each do |stock| %>
+					<tr >										
+							<td><%= stock.quotes.first.date %></td>
+							<td><%= link_to stock.symbol.upcase, stock %></td>
+							<td><%= stock.history_win_percentage %>% </td>
+					</tr>	
+				<% end%>		
+			</tbody>
+	</table>
+
+
+
+
+<!-- <div class="well"> -->
+<!-- <div class="span2 offset1">	 -->	

@@ -4,15 +4,22 @@ class Stock < ActiveRecord::Base
   validates :symbol, :uniqueness => true
   has_many :quotes, :dependent => :destroy
   accepts_nested_attributes_for :quotes
-  scope :winning, where('history_win_percentage > 10') 
+  scope :winning, where('history_win_percentage > 60') 
   scope :losing, where('history_win_percentage < 40') 
 
 
 
   def history_percent
-  	win = quotes.where(:history_win => true).size
-    predicted_up = quotes.where(:history_prediction => "Up").size
-    predicted_down = quotes.where(:history_prediction => "Down").size
+    #s.quotes.dated.map(&:date)
+    #qd_size = quotes.dated.size
+    qd = quotes.dated
+    #puts "++++++++++qd size#{qd_size}+++++++++++++++"
+  	win = qd.select { |x| x.history_win == true }.size
+    #puts "+++++++++Wins = +#{win}+++++++++++++++"
+    predicted_up = qd.select { |x| x.history_prediction == 'Up' }.size
+    #puts "++++++++++Predicted Up#{predicted_up}+++++++++++++++"
+    predicted_down = qd.select { |x| x.history_prediction == 'Down' }.size
+    #puts "++++++++++Predicted Down#{predicted_down}+++++++++++++++"
     playable_quotes = predicted_up + predicted_down
 
     self.history_win_percentage = ((win.to_f / playable_quotes)*100).round(2) 
@@ -26,7 +33,7 @@ class Stock < ActiveRecord::Base
 
   end
 
-  def self.all_ordered_by_child
+  def self.order_by_quote_date
    includes(:quotes).order('quotes.date DESC')
   end
 

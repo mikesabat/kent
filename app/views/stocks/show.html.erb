@@ -2,7 +2,7 @@
 
 <div class="center hero-unit">
 	
-	<b><%= @stock.symbol.upcase %></b>
+	<b><%= @stock.symbol.upcase %></b> <div class='pull-right span2'><%= @current %> </div>
 	<% if @future_quote.empty? %>
 	  <p><b>There are no Future Quotes</b> <div class="get_quote"><%= link_to "Get Future Quotes", "#", class: "btn btn-primary btn-large " %> </div> </p> <!-- pull-right -->
 	<% else %> 
@@ -11,7 +11,7 @@
 		<% else %>
 			<div class='upcoming quote'><%= @future_quote.last.period %> Earnings Release: <%= @future_quote.last.date %> <!-- need to work this -->		  	
 		<% end %>
-	<% end %>	  
+	<% end %>
 
 	  <p><b>Histoy Win Percentage: <%= @stock.history_win_percentage %>%</b></p> <!-- It looks like this takes all quotes - need to limit. -->
 	  <p>History Predicts Up: <%= @up_history_predictions.size %> ( <%= @up_win_percent %>% ) </p> 

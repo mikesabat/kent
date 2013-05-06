@@ -13,8 +13,7 @@ class StocksController < ApplicationController
   # GET /stocks/1
   # GET /stocks/1.json
   def show
-    @stock = Stock.find(params[:id])
-    @stock_quotes_recent = @stock.quotes.limit(18)        
+    @stock = Stock.find(params[:id])       
     @stock.history_percent #this seems to call the function correctly
     @dated_quotes = @stock.quotes.dated
 
@@ -32,6 +31,14 @@ class StocksController < ApplicationController
     @past_quotes = @dated_quotes.select { |q| q.date < Date.today }    #where('date < ?', Date.today)#@past_quotes = @dated_quotes.where('date < ?', Date.today)
     @future_quote = @dated_quotes - @past_quotes #@dated_quotes.select { |q| q.date !< Date.today }   #@quote_with_dates.where('date > ?', Date.today)
     
+    current_quote = @stock.current.to_s
+
+    spot = current_quote.index("change = ").to_i + 9
+    spot_end = current_quote.index("%").to_i
+    diff = spot_end - spot
+    @current = current_quote.slice(spot, diff)
+    
+    puts "============ from Controller #{@current} ================"
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @stock }

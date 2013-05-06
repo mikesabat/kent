@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'YahooFinance'
+
 class Stock < ActiveRecord::Base
   attr_accessible :symbol, :history_win_percentage
 
@@ -26,6 +29,24 @@ class Stock < ActiveRecord::Base
     self.save
   end
 
+  def jam
+    puts "Hello there!!!!!!!!!!!!!!!!"
+  end
+
+  def current
+    puts "Here we go!!!!!!!!!!!!!!"
+    quote_symbol = "#{symbol}"
+    puts "#{symbol}"
+    #quote_type = YahooFinanace::RealTimeQuote
+    YahooFinance::get_quotes( YahooFinance::RealTimeQuote, quote_symbol ) do |qt|
+      puts "QUOTING: #{qt.symbol}"
+      #puts qt.to_s
+      #@change = "#{qt.change}"
+      #puts "(((((((((( here is the change #{@change} )))))))))))"
+    end
+
+  end
+
   def future_quote_date
     quote_with_date = quotes.where(['date is not null'])
     future_quote_with_date = quote_with_date.where('date > ?', Date.today)
@@ -37,5 +58,20 @@ class Stock < ActiveRecord::Base
    includes(:quotes).order('quotes.date DESC')
   end
 
-  
+  def lookup
+    unless date == nil      
+      #puts "77777777#{stock.symbol}*******#{date}***********" #why is the date, 'true'??
+        YahooFinance::get_historical_quotes( stock.symbol,
+                                        date,
+                                        date ) do |row|
+                
+          self.zero_open = row[1]
+          self.zero_close = row[4]
+          ddd = row[4]
+          #puts "----------------------#{ddd}"  
+          self.save 
+        end
+    end  
+  end
+
 end
